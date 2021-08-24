@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
+import './component/style.css';
 class Newbook extends React.Component {
 
     render() {  
@@ -11,7 +12,7 @@ class Newbook extends React.Component {
 
         {this.props.databook.map(elme=>{
             
-           return(  <Card style={{ width: '18rem' }}>
+           return(  <Card className='mycard' style={{ width: '18rem' }}>
            <Card.Body>
              <Card.Title>titil:{elme.title}</Card.Title>
              <Card.Text>
