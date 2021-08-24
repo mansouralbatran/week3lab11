@@ -61,11 +61,20 @@ class MyFavoriteBooks extends React.Component {
       emailuser :this.props.auth0.user.email
     }
     let BookData=await axios.post(`${process.env.REACT_APP_SERVER}/addbook`,BookInfo)
-    console.log('hellllloooooooooooooooooooooooo',BookData.data);
+    // console.log('hellllloooooooooooooooooooooooo',BookData.data);
     this.setState({ 
       bookdat:BookData.data,
      })
    
+    }
+    deletBook=async (DataId)=>{
+      let emailuser = this.props.auth0.user.email
+     console.log(DataId);
+     let DeletedBook=await axios.delete(`${process.env.REACT_APP_SERVER}/deleteCat/${DataId}?email=${emailuser}`)
+    //  console.log(DeletedBook.data);
+     this.setState({
+      bookdat:DeletedBook.data
+     })
     }
 
 
@@ -79,7 +88,7 @@ class MyFavoriteBooks extends React.Component {
         This is a collection of my favorite books
       </p>
       <Button onClick={this.AddBook} variant="primary">Add book</Button>
-        <Newbook  databook={this.state.bookdat}/>
+        <Newbook deletHandel={this.deletBook} databook={this.state.bookdat}/>
         {this.state.showmodel &&<Model show={this.state.showmodel} handleClose={this.handleClose} addBook={this.addBook} />}
 
 

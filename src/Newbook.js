@@ -3,7 +3,13 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import './component/style.css';
 class Newbook extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
 
+    }
+  }
+ 
     render() {  
 
 
@@ -21,7 +27,9 @@ class Newbook extends React.Component {
              <Card.Text>
              email:{elme.email}
              </Card.Text>
-             <Button variant="primary">Go somewhere</Button>
+             
+
+             <Button onClick={()=>this.props.deletHandel(elme._id)} variant="primary">Delete</Button>
            </Card.Body>
          </Card>)
           
