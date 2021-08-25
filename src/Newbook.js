@@ -30,6 +30,7 @@ class Newbook extends React.Component {
              
 
              <Button onClick={()=>this.props.deletHandel(elme._id)} variant="primary">Delete</Button>
+             <Button onClick={()=>this.props.updateHandel(elme._id)} variant="primary">Update</Button>
            </Card.Body>
          </Card>)
           

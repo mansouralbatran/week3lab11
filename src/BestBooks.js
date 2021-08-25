@@ -7,6 +7,7 @@ import { withAuth0 } from '@auth0/auth0-react';
 import Newbook from './Newbook';
 import Button from 'react-bootstrap/Button'
 import Model from './model';
+import UpdateModel from './updatebook'
 
 
 class MyFavoriteBooks extends React.Component {
@@ -15,7 +16,9 @@ class MyFavoriteBooks extends React.Component {
     this.state = {
       bookdat: [],
       showdata: 0,
-      showmodel:false
+      showmodel:false,
+      showupdatemodel:false,
+      selectedbook:[]
 
     }
 
@@ -46,7 +49,8 @@ class MyFavoriteBooks extends React.Component {
   
   handleClose=()=>{
     this.setState({
-      showmodel:false
+      showmodel:false,
+      showupdatemodel:false
 
     })
 
@@ -70,11 +74,42 @@ class MyFavoriteBooks extends React.Component {
     deletBook=async (DataId)=>{
       let emailuser = this.props.auth0.user.email
      console.log(DataId);
-     let DeletedBook=await axios.delete(`${process.env.REACT_APP_SERVER}/deleteCat/${DataId}?email=${emailuser}`)
+     let DeletedBook=await axios.delete(`${process.env.REACT_APP_SERVER}/deletebook/${DataId}?email=${emailuser}`)
     //  console.log(DeletedBook.data);
      this.setState({
       bookdat:DeletedBook.data
      })
+    }
+
+    updateHandel=(id)=>{
+      let selctedbook=this.state.bookdat.find(element=>{
+       if (id===element._id) {return element
+          
+        }})
+     console.log('lllll',selctedbook);
+this.setState({
+  showupdatemodel:true,
+  selectedbook:selctedbook
+})
+    }
+
+    updatefrommodel= async(event)=>{
+event.preventDefault();
+let BookInfo={
+  Title1:event.target.Title.value,
+  Description1:event.target.Description.value,
+  emailuser :this.props.auth0.user.email,
+  id:this.state.selectedbook._id
+}
+
+this.handleClose()
+console.log('aaaaaa',BookInfo);
+
+let updateddata= await axios.put(`${process.env.REACT_APP_SERVER}/updatebook`,BookInfo)
+this.setState({
+  bookdat:updateddata.data
+})
+
     }
 
 
@@ -88,8 +123,10 @@ class MyFavoriteBooks extends React.Component {
         This is a collection of my favorite books
       </p>
       <Button onClick={this.AddBook} variant="primary">Add book</Button>
-        <Newbook deletHandel={this.deletBook} databook={this.state.bookdat}/>
+        <Newbook   updateHandel={this.updateHandel}     deletHandel={this.deletBook} databook={this.state.bookdat}/>
         {this.state.showmodel &&<Model show={this.state.showmodel} handleClose={this.handleClose} addBook={this.addBook} />}
+
+        {this.state.showupdatemodel&&<UpdateModel  selectedbook={this.state.selectedbook} show={this.state.showupdatemodel} handleClose={this.handleClose} updatefrommodel={this.updatefrommodel}    />}
 
 
    
